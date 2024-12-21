@@ -1,0 +1,218 @@
+/* Estilo general para el cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #fff;
+}
+ 
+ 
+.navbar .menu li a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.navbar .menu li a.active {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Estilo del encabezado */
+header {
+    background-color: #202225;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+/* Contenedor principal de la página */
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 1600px;
+    margin-left: 20px;
+}
+
+/* Estilo de la sección de imagen de perfil y nombre de usuario */
+.profile-section {
+    background-color: #40444b;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-section img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-section input[type="file"] {
+    margin: 10px 0;
+}
+
+
+.profile-section button {
+    background-color: #f05d5d;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+  
+
+}
+
+.profile-section button:hover {
+    background-color: #d04b4b;
+}
+
+.profile-section input[type="text"] {
+    padding: 8px;
+    background-color: #50555a;
+    border: 1px solid #666;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+/* Estilo de los comentarios */
+.comment-form {
+    background-color: #40444b;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-form input, .comment-form textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #50555a;
+    border: 1px solid #666;
+    color: #fff;
+    font-size: 1em;
+}
+
+.comment-form button {
+    background-color: #5865f2;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.comment-form button:hover {
+    background-color: #4752c4;
+}
+
+.comment-form button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.comments-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment {
+    background-color: #40444b;
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment img.profile {
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-text {
+    margin-top: 8px;
+}
+
+/* Estilo para las imágenes cuadradas en los comentarios */
+.square-image-section {
+    margin-top: 10px;
+}
+
+.square-image-section input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.square-image-section img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 10px;
+    display: none;
+}
+
+/* Estilos para las categorías de juegos */
+.game-category {
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #36393f;
+    width: 750px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-category img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-category h2 {
+    text-align: center;
+    background-color: #40444b;
+    padding: 10px;
+    margin: 0;
+    font-size: 1.5em;
+    width: 100%;
+}
+
+.game-category-content {
+    padding: 15px;
+    background-color: #50555a;
+    display: none;
+}
+
+/* Efecto hover para las categorías */
+.game-category:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.game-category:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+

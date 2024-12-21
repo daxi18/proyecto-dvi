@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro de Videojuegos</title>
+    <!-- Enlazamos el archivo CSS -->
+    <link rel="stylesheet" href="videojuegos.css">
+</head> 
+<body> 
+
+<header>Foro de Videojuegos</header>
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="menu">
+            <li><a href="http://localhost/proyecto/proy.html" class="active">Inicio</a></li>
+            <li><a href="https://www.google.com">Cerrar sesión</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+   
+    <!-- Sección de Imagen de Perfil y Nombre de Usuario -->
+    <div class="profile-section">
+        <div>
+            <h3>Imagen de Perfil</h3>
+            <input type="file" id="profile-img-input" onchange="setProfileImage(event)">
+            <button onclick="clearProfileImage()">Eliminar Imagen de Perfil</button>
+            <input type="text" id="username" placeholder="Escribe tu nombre de usuario...">
+        </div>
+        <div>
+            <img id="profile-img" src="https://via.placeholder.com/80" alt="Imagen de perfil">
+        </div>
+    </div>
+
+    <!-- Categoría Juegos de Rol -->
+    <div class="game-category" id="category-rpg" onclick="toggleCategory('rpg', event)">
+        <img src="https://phantom-elmundo.unidadeditorial.es/c72283503806596686baa10f15acf89c/crop/153x0/759x404/resize/473/f/webp/assets/multimedia/imagenes/2020/03/30/15855939110237.jpg">
+        <h2>Juegos de Rol</h2>
+        <div class="game-category-content" id="content-rpg">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-rpg" placeholder="Escribe un comentario...">
+                
+                <!-- Sección para imagen cuadrada -->
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-rpg" onchange="setSquareImage(event, 'rpg')">
+                    <img id="square-img-rpg" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <!-- Sección para video -->
+                <div class="video-section">
+                    <input type="file" id="video-input-rpg" accept="video/*" onchange="setVideo(event, 'rpg')">
+                    <video id="video-preview-rpg" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('rpg')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-rpg" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <!-- Categoría Juegos de Aventura -->
+    <div class="game-category" id="category-adventure" onclick="toggleCategory('adventure', event)">
+        <img src="https://www.lavanguardia.com/files/image_990_484/uploads/2021/11/15/6192b26a73744.jpeg">
+        <h2>Juegos Multijugador</h2>
+        <div class="game-category-content" id="content-adventure">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-adventure" placeholder="Escribe un comentario...">
+                
+                <!-- Sección para imagen cuadrada -->
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-adventure" onchange="setSquareImage(event, 'adventure')">
+                    <img id="square-img-adventure" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <!-- Sección para video -->
+                <div class="video-section">
+                    <input type="file" id="video-input-adventure" accept="video/*" onchange="setVideo(event, 'adventure')">
+                    <video id="video-preview-adventure" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('adventure')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-adventure" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <!-- Categoría Juegos de Acción -->
+    <div class="game-category" id="category-action" onclick="toggleCategory('action', event)">
+        <img src="https://wallpapers.com/images/high/action-games-1920-x-1080-wallpaper-q7kaicf904291cif.webp">
+        <h2>Juegos de Acción</h2>
+        <div class="game-category-content" id="content-action">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-action" placeholder="Escribe un comentario...">
+                
+                <!-- Sección para imagen cuadrada -->
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-action" onchange="setSquareImage(event, 'action')">
+                    <img id="square-img-action" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <!-- Sección para video -->
+                <div class="video-section">
+                    <input type="file" id="video-input-action" accept="video/*" onchange="setVideo(event, 'action')">
+                    <video id="video-preview-action" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('action')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-action" class="comments-list"></ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Función para abrir/cerrar categorías
+    function toggleCategory(category, event) {
+        const content = document.getElementById(`content-${category}`);
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        event.stopPropagation();
+    }
+
+    // Función para agregar comentario
+    function submitComment(category) {
+        const text = document.getElementById(`comment-text-${category}`).value;
+        if (text === '') return;  // No publicar si el comentario está vacío
+
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+
+        // Imagen de perfil
+        const profileImage = document.createElement('img');
+        profileImage.src = document.getElementById('profile-img').src;
+        profileImage.classList.add('profile');
+        commentItem.appendChild(profileImage);
+
+        // Texto del comentario
+        const commentText = document.createElement('p');
+        commentText.classList.add('comment-text');
+        commentText.textContent = text;
+        commentItem.appendChild(commentText);
+
+        // Imagen cuadrada
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (squareImage.style.display === 'block') {
+            const img = document.createElement('img');
+            img.src = squareImage.src;
+            img.style.width = '200px';  // Imagen cuadrada más pequeña y rectangular
+            img.style.height = '150px'; // Imagen rectangular
+            img.style.objectFit = 'cover';
+            commentItem.appendChild(img);
+        }
+
+        // Video
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (videoPreview.style.display === 'block') {
+            const video = document.createElement('video');
+            video.src = videoPreview.src;
+            video.controls = true;
+            video.style.width = '200px';
+            video.style.height = '150px';
+            commentItem.appendChild(video);
+        }
+
+        // Agregar el comentario a la lista
+        document.getElementById(`comments-list-${category}`).appendChild(commentItem);
+
+        // Limpiar los campos
+        document.getElementById(`comment-text-${category}`).value = '';
+        document.getElementById(`square-img-${category}`).style.display = 'none';
+        document.getElementById(`video-preview-${category}`).style.display = 'none';
+    }
+
+    // Establecer la imagen de perfil
+    function setProfileImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Eliminar la imagen de perfil
+    function clearProfileImage() {
+        document.getElementById('profile-img').src = "https://via.placeholder.com/80";
+    }
+
+    // Establecer la imagen cuadrada para el comentario
+    function setSquareImage(event, category) {
+        const file = event.target.files[0];
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                squareImage.style.display = 'block';
+                squareImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Establecer el video para el comentario
+    function setVideo(event, category) {
+        const file = event.target.files[0];
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                videoPreview.style.display = 'block';
+                videoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script src="videojuegos.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="videojuegos.css">
+</head> 
+<body> 
+
+<header>Foro de Deportes</header>
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="menu">
+            <li><a href="http://localhost/proyecto/proy.html" class="active">Inicio</a></li>
+            <li><a href="https://www.google.com">Cerrar sesión</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+   
+    <div class="profile-section">
+        <div>
+            <h3>Imagen de Perfil</h3>
+            <input type="file" id="profile-img-input" onchange="setProfileImage(event)">
+            <button onclick="clearProfileImage()">Eliminar Imagen de Perfil</button>
+            <input type="text" id="username" placeholder="Escribe tu nombre de usuario...">
+        </div>
+        <div>
+            <img id="profile-img" src="https://via.placeholder.com/80" alt="Imagen de perfil">
+        </div>
+    </div>
+
+    <div class="game-category" id="category-shonen" onclick="toggleCategory('shonen', event)">
+        <img src="https://i.blogs.es/ac2369/2541626690_7369a078e6/1366_2000.webp">
+        <h2>Deporte de contacto</h2>
+        <div class="game-category-content" id="content-shonen">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-shonen" placeholder="Escribe un comentario...">
+                
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-shonen" onchange="setSquareImage(event, 'shonen')">
+                    <img id="square-img-shonen" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <div class="video-section">
+                    <input type="file" id="video-input-shonen" accept="video/*" onchange="setVideo(event, 'shonen')">
+                    <video id="video-preview-shonen" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('shonen')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-shonen" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <div class="game-category" id="category-escolar" onclick="toggleCategory('escolar', event)">
+        <img src="https://static.nationalgeographic.es/files/styles/image_3200/public/21754.600x450.webp?w=760&h=570">
+        <h2> Deportes de pelota</h2>
+        <div class="game-category-content" id="content-escolar">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-escolar" placeholder="Escribe un comentario...">
+
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-escolar" onchange="setSquareImage(event, 'escolar')">
+                    <img id="square-img-escolar" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <div class="video-section">
+                    <input type="file" id="video-input-escolar" accept="video/*" onchange="setVideo(event, 'escolar')">
+                    <video id="video-preview-escolar" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('escolar')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-escolar" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <div class="game-category" id="category-deporte" onclick="toggleCategory('deporte', event)">
+        <img src="https://phantom-marca.unidadeditorial.es/c07f86c03a28cdda56e2381c235de042/resize/660/f/webp/assets/multimedia/imagenes/2024/07/31/17224414884615.png">
+        <h2>Atletismo</h2>
+        <div class="game-category-content" id="content-deporte">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-deporte" placeholder="Escribe un comentario...">
+                
+
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-deporte" onchange="setSquareImage(event, 'deporte')">
+                    <img id="square-img-deporte" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+               
+                <div class="video-section">
+                    <input type="file" id="video-input-deporte" accept="video/*" onchange="setVideo(event, 'deporte')">
+                    <video id="video-preview-deporte" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('deporte')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-deporte" class="comments-list"></ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleCategory(category, event) {
+        const content = document.getElementById(`content-${category}`);
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        event.stopPropagation();
+    }
+
+    function submitComment(category) {
+        const text = document.getElementById(`comment-text-${category}`).value;
+        if (text === '') return; 
+
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+
+        const profileImage = document.createElement('img');
+        profileImage.src = document.getElementById('profile-img').src;
+        profileImage.classList.add('profile');
+        commentItem.appendChild(profileImage);
+
+        const commentText = document.createElement('p');
+        commentText.classList.add('comment-text');
+        commentText.textContent = text;
+        commentItem.appendChild(commentText);
+
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (squareImage.style.display === 'block') {
+            const img = document.createElement('img');
+            img.src = squareImage.src;
+            img.style.width = '200px';  
+            img.style.height = '150px'; 
+            img.style.objectFit = 'cover';
+            commentItem.appendChild(img);
+        }
+
+  
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (videoPreview.style.display === 'block') {
+            const video = document.createElement('video');
+            video.src = videoPreview.src;
+            video.controls = true;
+            video.style.width = '200px';
+            video.style.height = '150px';
+            commentItem.appendChild(video);
+        }
+
+        document.getElementById(`comments-list-${category}`).appendChild(commentItem);
+s
+        document.getElementById(`comment-text-${category}`).value = '';
+        document.getElementById(`square-img-${category}`).style.display = 'none';
+        document.getElementById(`video-preview-${category}`).style.display = 'none';
+    }
+
+    function setProfileImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function clearProfileImage() {
+        document.getElementById('profile-img').src = "https://via.placeholder.com/80";
+    }
+
+    function setSquareImage(event, category) {
+        const file = event.target.files[0];
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                squareImage.style.display = 'block';
+                squareImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function setVideo(event, category) {
+        const file = event.target.files[0];
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                videoPreview.style.display = 'block';
+                videoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script src="videojuegos.js"></script>
+
+</body>
+</html>

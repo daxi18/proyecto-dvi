@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro de Videojuegos</title>
+    <!-- Enlazamos el archivo CSS -->
+    <link rel="stylesheet" href="videojuegos.css">
+</head> 
+<body> 
+
+<header>Foro de Videojuegos</header>
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="menu">
+            <li><a href="http://localhost/proyecto/proy.html" class="active">Inicio</a></li>
+            <li><a href="https://www.google.com">Cerrar sesion</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+   
+    <!-- Sección de Imagen de Perfil y Nombre de Usuario -->
+    <div class="profile-section">
+        <div>
+            <h3>Imagen de Perfil</h3>
+            <input type="file" id="profile-img-input" onchange="setProfileImage(event)">
+            <button onclick="clearProfileImage()">Eliminar Imagen de Perfil</button>
+            <input type="text" id="username" placeholder="Escribe tu nombre de usuario...">
+        </div>
+        <div>
+            <img id="profile-img" src="https://via.placeholder.com/80" alt="Imagen de perfil">
+        </div>
+    </div>
+
+    <!-- Categoría de juegos de Rol -->
+    <div class="game-category" id="category-rpg" onclick="toggleCategory('role-playing', event)">
+        <img src="https://pbs.twimg.com/media/FMYD0_TVgAQ02Ek?format=jpg&name=small">
+        <h2>Cualquier cosa</h2>
+        <div class="game-category-content" id="content-role-playing">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-rpg" placeholder="Escribe un comentario...">
+                
+                <!-- Sección para imagen cuadrada -->
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-rpg" onchange="setSquareImage(event, 'rpg')">
+                    <img id="square-img-rpg" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+                
+                <!-- Sección para video -->
+                <div class="video-section">
+                    <input type="file" id="video-input-rpg" accept="video/*" onchange="setVideo(event, 'rpg')">
+                    <video id="video-preview-rpg" controls style="display: none; width: 200px; height: 150px;">
+                        Tu navegador no soporta videos.
+                    </video>
+                </div>
+
+                <button onclick="submitComment('rpg')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-rpg" class="comments-list"></ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Funcion para abrir/cerrar categorias
+    function toggleCategory(category, event) {
+        const content = document.getElementById(`content-${category}`);
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        event.stopPropagation();
+    }
+
+    // Funcion para agregar comentario
+    function submitComment(category) {
+        const text = document.getElementById(`comment-text-${category}`).value;
+        if (text === '') return;  // No publicar si el comentario esta vacio
+
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+
+        // Imagen de perfil
+        const profileImage = document.createElement('img');
+        profileImage.src = document.getElementById('profile-img').src;
+        profileImage.classList.add('profile');
+        commentItem.appendChild(profileImage);
+
+        // Texto del comentario
+        const commentText = document.createElement('p');
+        commentText.classList.add('comment-text');
+        commentText.textContent = text;
+        commentItem.appendChild(commentText);
+
+        // Imagen cuadrada
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (squareImage.style.display === 'block') {
+            const img = document.createElement('img');
+            img.src = squareImage.src;
+            img.style.width = '200px';  // Imagen cuadrada más pequeña y rectangular
+            img.style.height = '150px'; // Imagen rectangular
+            img.style.objectFit = 'cover';
+            commentItem.appendChild(img);
+        }
+
+        // Video
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (videoPreview.style.display === 'block') {
+            const video = document.createElement('video');
+            video.src = videoPreview.src;
+            video.controls = true;
+            video.style.width = '200px';
+            video.style.height = '150px';
+            commentItem.appendChild(video);
+        }
+
+        // Agregar el comentario a la lista
+        document.getElementById(`comments-list-${category}`).appendChild(commentItem);
+
+        // Limpiar los campos
+        document.getElementById(`comment-text-${category}`).value = '';
+        document.getElementById(`square-img-${category}`).style.display = 'none';
+        document.getElementById(`video-preview-${category}`).style.display = 'none';
+    }
+
+    // Establecer la imagen de perfil
+    function setProfileImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-img').src = e.target.result;
+                localStorage.setItem('profileImage', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Eliminar la imagen de perfil
+    function clearProfileImage() {
+        localStorage.removeItem('profileImage');
+        document.getElementById('profile-img').src = "https://via.placeholder.com/80";
+    }
+
+    // Establecer la imagen cuadrada para el comentario
+    function setSquareImage(event, category) {
+        const file = event.target.files[0];
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                squareImage.style.display = 'block';
+                squareImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Establecer el video para el comentario
+    function setVideo(event, category) {
+        const file = event.target.files[0];
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                videoPreview.style.display = 'block';
+                videoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script src="videojuegos.js"></script>
+</body>
+</html>

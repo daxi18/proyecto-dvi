@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arte</title>
+    <link rel="stylesheet" href="videojuegos.css">
+</head> 
+<body> 
+
+<header>Foro de Arte</header>
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="menu">
+            <li><a href="http://localhost/proyecto/proy.html" class="active">Inicio</a></li>
+            <li><a href="https://www.google.com">Cerrar sesion</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="profile-section">
+        <div>
+            <h3>Imagen de Perfil</h3>
+            <input type="file" id="profile-img-input" onchange="setProfileImage(event)">
+            <button onclick="clearProfileImage()">Eliminar Imagen de Perfil</button>
+            <input type="text" id="username" placeholder="Escribe tu nombre de usuario...">
+        </div>
+        <div>
+            <img id="profile-img" src="https://via.placeholder.com/80" alt="Imagen de perfil">
+        </div>
+    </div>
+
+    <div class="game-category" id="category-visual-arts" onclick="toggleCategory('visual-arts', event)">
+        <img src="https://www.siamgodh.com/wp-content/uploads/2024/01/tecnicas-de-pintura-en-taller-de-arte.jpg">
+        <h2>Artes Visuales</h2>
+        <div class="game-category-content" id="content-visual-arts">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-visual-arts" placeholder="Escribe un comentario...">
+
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-visual-arts" onchange="setSquareImage(event, 'visual-arts')">
+                    <img id="square-img-visual-arts" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <div class="video-section">
+                    <input type="file" id="video-input-visual-arts" accept="video/*" onchange="setVideo(event, 'visual-arts')">
+                    <video id="video-preview-visual-arts" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('visual-arts')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-visual-arts" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <div class="game-category" id="category-performing-arts" onclick="toggleCategory('performing-arts', event)">
+        <img src="https://concepto.de/wp-content/uploads/2018/09/artes-escenicas2-e1537974994625.jpg">
+        <h2>Artes Escénicas</h2>
+        <div class="game-category-content" id="content-performing-arts">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-performing-arts" placeholder="Escribe un comentario...">
+
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-performing-arts" onchange="setSquareImage(event, 'performing-arts')">
+                    <img id="square-img-performing-arts" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <div class="video-section">
+                    <input type="file" id="video-input-performing-arts" accept="video/*" onchange="setVideo(event, 'performing-arts')">
+                    <video id="video-preview-performing-arts" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('performing-arts')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-performing-arts" class="comments-list"></ul>
+        </div>
+    </div>
+
+    <div class="game-category" id="category-literary-arts" onclick="toggleCategory('literary-arts', event)">
+        <img src="https://abcimprenta.com/wp-content/uploads/2023/12/libros-alterados.webp">
+        <h2>Artes Literarias</h2>
+        <div class="game-category-content" id="content-literary-arts">
+            <div class="comment-form" onclick="event.stopPropagation()">
+                <input type="text" id="comment-text-literary-arts" placeholder="Escribe un comentario...">
+                
+                <div class="square-image-section">
+                    <input type="file" id="square-img-input-literary-arts" onchange="setSquareImage(event, 'literary-arts')">
+                    <img id="square-img-literary-arts" src="" alt="Imagen cuadrada" style="display: none;">
+                </div>
+
+                <div class="video-section">
+                    <input type="file" id="video-input-literary-arts" accept="video/*" onchange="setVideo(event, 'literary-arts')">
+                    <video id="video-preview-literary-arts" controls style="display: none; width: 200px; height: 150px;">
+                    </video>
+                </div>
+
+                <button onclick="submitComment('literary-arts')">Publicar Comentario</button>
+            </div>
+            <ul id="comments-list-literary-arts" class="comments-list"></ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleCategory(category, event) {
+        const content = document.getElementById(`content-${category}`);
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        event.stopPropagation();
+    }
+
+    function submitComment(category) {
+        const text = document.getElementById(`comment-text-${category}`).value;
+        if (text === '') return;  
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+
+        const profileImage = document.createElement('img');
+        profileImage.src = document.getElementById('profile-img').src;
+        profileImage.classList.add('profile');
+        commentItem.appendChild(profileImage);
+
+        const commentText = document.createElement('p');
+        commentText.classList.add('comment-text');
+        commentText.textContent = text;
+        commentItem.appendChild(commentText);
+
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (squareImage.style.display === 'block') {
+            const img = document.createElement('img');
+            img.src = squareImage.src;
+            img.style.width = '200px';  
+            img.style.height = '150px'; 
+            img.style.objectFit = 'cover';
+            commentItem.appendChild(img);
+        }
+
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (videoPreview.style.display === 'block') {
+            const video = document.createElement('video');
+            video.src = videoPreview.src;
+            video.controls = true;
+            video.style.width = '200px';
+            video.style.height = '150px';
+            commentItem.appendChild(video);
+        }
+
+        document.getElementById(`comments-list-${category}`).appendChild(commentItem);
+        document.getElementById(`comment-text-${category}`).value = '';
+        document.getElementById(`square-img-${category}`).style.display = 'none';
+        document.getElementById(`video-preview-${category}`).style.display = 'none';
+    }
+
+    function setProfileImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-img').src = e.target.result;
+                localStorage.setItem('profileImage', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function clearProfileImage() {
+        localStorage.removeItem('profileImage');
+        document.getElementById('profile-img').src = "https://via.placeholder.com/80";
+    }
+
+    function setSquareImage(event, category) {
+        const file = event.target.files[0];
+        const squareImage = document.getElementById(`square-img-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                squareImage.style.display = 'block';
+                squareImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function setVideo(event, category) {
+        const file = event.target.files[0];
+        const videoPreview = document.getElementById(`video-preview-${category}`);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                videoPreview.style.display = 'block';
+                videoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script src="videojuegos.js"></script>
+</body>
+</html>
